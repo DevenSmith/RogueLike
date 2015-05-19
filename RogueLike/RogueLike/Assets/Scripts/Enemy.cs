@@ -4,6 +4,9 @@ using System.Collections;
 public class Enemy : MovingObject 
 {
 	public int PlayerDamage;
+	public AudioClip EnemyAttack1;
+	public AudioClip EnemyAttack2;
+	
 	
 	private Animator animator;
 	private Transform target;
@@ -12,6 +15,7 @@ public class Enemy : MovingObject
 	// Use this for initialization
 	protected override void Start () 
 	{
+		GameManager.Instance.AddEnemiesToList(this);
 		animator = GetComponent<Animator>();
 		target = GameObject.FindGameObjectWithTag("Player").transform;
 		base.Start();
@@ -57,7 +61,11 @@ public class Enemy : MovingObject
 	{
 		Player hitPlayer = component as Player;
 		
+		animator.SetTrigger("enemyAttack");
+		
 		hitPlayer.LoseFood(PlayerDamage);
+		
+		SoundManager.Instance.RandomizeSfx(EnemyAttack1, EnemyAttack2);
 	}
 	
 }
